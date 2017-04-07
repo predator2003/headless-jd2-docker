@@ -31,12 +31,12 @@ LABEL org.freenas.interactive="false"				\
       ]"
 
 # Create user and group for JDownloader.
-RUN groupadd -r -g 666 jdownloader \
-    && useradd -r -u 666 -g 666 -d /jdownloader -m jdownloader
+RUN addgroup -S -g 666 jdownloader \
+    && adduser -u 666 -D -S -G jdownloader jdownloader
 
 # Create directory, download and start JD2 for the initial update and creation of config files.
 RUN mkdir -p /opt/JDownloader/ \
-    && wget -O /opt/JDownloader/JDownloader.jar --user-agent="https://hub.docker.com/r/koopzington/freenas-docker-jdownloader/" --progress=bar:force http://installer.jdownloader.org/JDownloader.jar \
+    && wget -O /opt/JDownloader/JDownloader.jar --user-agent="https://hub.docker.com/r/koopz/freenas-docker-jdownloader/" --progress=bar:force http://installer.jdownloader.org/JDownloader.jar \
     && java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar
 
 COPY startJD2.sh /opt/JDownloader/
