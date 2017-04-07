@@ -2,6 +2,34 @@ FROM openjdk:8-jre-alpine
 
 MAINTAINER Koopzington <koopzington@gmail.com>
 
+LABEL org.freenas.interactive="false"				\
+      org.freenas.version="2"					\
+      org.freenas.upgradeable="true"				\
+      org.freenas.expose-ports-at-host="false"			\
+      org.freenas.autostart="true"				\
+      org.freenas.volumes="[					\
+          {							\
+              \"name\": \"/opt/JDownloader/cfg\",			\
+              \"descr\": \"Configuration files directory\"	\
+          },							\
+          {							\
+              \"name\": \"/opt/JDownloader/Downloads\",		\
+              \"descr\": \"Downloads Folder\"			\
+          }							\	
+       ]"							\
+       org.freenas.settings="[					\
+          {							\
+              \"env\": \"JDOWNLOADER_GID\",			\
+              \"descr\": \"PGID assigned upon creation\",	\
+              \"optional\": true				\
+          },							\
+          {							\
+              \"env\": \"JDOWNLOADER_UID\",			\
+              \"descr\": \"PUID assigned upon creation\",	\
+              \"optional\": true				\
+          }							\
+      ]"
+
 # Create user and group for JDownloader.
 RUN groupadd -r -g 666 jdownloader \
     && useradd -r -u 666 -g 666 -d /jdownloader -m jdownloader
