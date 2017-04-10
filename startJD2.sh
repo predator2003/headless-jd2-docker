@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 USER="jdownloader"
 
@@ -12,11 +12,11 @@ echo
 
 function stopJD2 {
 printf "Stopping JDownloader"
-	PID=$(cat JDownloader.pid)
-	kill $PID
-	wait $PID
-	echo  "[DONE]"
-	exit
+    PID=$(cat JDownloader.pid)
+    kill $PID
+    wait $PID
+    echo  "[DONE]"
+    exit
 }
 
 trap stopJD2 EXIT
@@ -31,9 +31,10 @@ chown -R ${USER}: /opt/JDownloader
 chown ${USER}: /media
 echo "[DONE]"
 
-echo "Starting JDownloader..."
-exec su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER}
+printf "Starting JDownloader..."
+su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER}
+echo "[DONE]"
 
-while true; do
-	sleep inf
+while true; do 
+    i=1
 done
