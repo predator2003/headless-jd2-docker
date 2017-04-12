@@ -32,7 +32,7 @@ chown ${USER}: /media
 echo "[DONE]"
 
 printf "Starting JDownloader..."
-su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER}
+su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER} -s /bin/sh
 echo "[DONE]"
 
 while true; do 
