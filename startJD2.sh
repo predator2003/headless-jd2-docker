@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 USER="jdownloader"
 
@@ -15,7 +15,7 @@ printf "Stopping JDownloader"
     PID=$(cat JDownloader.pid)
     kill $PID
     wait $PID
-    echo  "[DONE]"
+    echo "[DONE]"
     exit
 }
 
@@ -28,11 +28,10 @@ echo "[DONE]"
 
 printf "Setting permissions... "
 chown -R ${USER}: /opt/JDownloader
-chown ${USER}: /media
 echo "[DONE]"
 
 printf "Starting JDownloader..."
-su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER} -s /bin/sh
+su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER}
 echo "[DONE]"
 
 while true; do 
