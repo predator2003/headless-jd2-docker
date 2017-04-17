@@ -30,7 +30,7 @@ printf "Setting permissions... "
 chown -R ${USER}: /opt/JDownloader
 echo "[DONE]"
 
-printf "Starting JDownloader..."
+echo "Starting JDownloader..."
 su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER}
 echo "[DONE]"
 
