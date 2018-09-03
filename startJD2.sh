@@ -7,28 +7,28 @@ function stopJD2 {
 	exit
 }
 
-if [ "$GID" ]
+if [ "${gid}" ]
 then
 	groupadd -g $GID $GROUP
 else
-	GROUP=root
+	group=root
 fi
 
-if [ "$UID" ] 
+if [ "${uid}" ] 
 then
-	USER=jdownloader
-	useradd -r -s /bin/false -u $UID -g $GROUP $USER
-	chown -R $USER:$GROUP /opt/JDownloader
+	useradd -r -s /bin/false -u ${uid} -g ${group} ${user}
+	chown -R ${user}:${group} /opt/JDownloader
 else
-	USER=root
+	user=root
 fi
+
+# Sometimes this gets deleted. Just copy it every time.
+cp /opt/JDownloader/sevenzip* /opt/JDownloader/libs/
 
 trap stopJD2 EXIT
 
-su -c "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar" -s /bin/bash $USER
+echo "Starting JDownloader..."
+su -c "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar" -s /bin/bash ${user}
+echo "[DONE]"
 
-#java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar &
-
-#while true; do
-#	sleep inf
-#done
+while sleep 3600; do :; done
