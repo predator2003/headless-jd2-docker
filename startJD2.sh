@@ -9,7 +9,7 @@ function stopJD2 {
 
 if [ "${gid}" ]
 then
-	groupadd -g $GID $GROUP
+	groupadd -g ${gid} ${group}
 else
 	group=root
 fi
