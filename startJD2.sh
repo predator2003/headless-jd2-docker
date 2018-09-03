@@ -1,39 +1,35 @@
 #!/bin/bash
 
-USER="jdownloader"
-
-echo "JDownloader settings"
-echo "===================="
-echo
-echo "User:       ${USER}"
-echo "UID:        ${JDOWNLOADER_UID:=666}"
-echo "GID:        ${JDOWNLOADER_GID:=666}"
-echo
-
 function stopJD2 {
-printf "Stopping JDownloader"
-    PID=$(cat JDownloader.pid)
-    kill $PID
-    wait $PID
-    echo "[DONE]"
-    exit
+	PID=$(cat JDownloader.pid)
+	kill $PID
+	wait $PID
+	exit
 }
+
+if [ "$GID" ]
+then
+	GROUP=jdownloader
+	groupadd -g $GID $GROUP
+else
+	GROUP=root
+fi
+
+if [ "$UID" ] 
+then
+	USER=jdownloader
+	useradd -r -s /bin/false -u $UID -g $GROUP $USER
+	chown -R $USER:$GROUP /opt/JDownloader
+else
+	USER=root
+fi
 
 trap stopJD2 EXIT
 
-printf "Updating UID / GID... "
-[[ $(id -u ${USER}) == ${JDOWNLOADER_UID} ]] || usermod  -o -u ${JDOWNLOADER_UID} ${USER}
-[[ $(id -g ${USER}) == ${JDOWNLOADER_GID} ]] || groupmod -o -g ${JDOWNLOADER_GID} ${USER}
-echo "[DONE]"
+su -c "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar" -s /bin/bash $USER
 
-printf "Setting permissions... "
-chown -R ${USER}: /opt/JDownloader
-echo "[DONE]"
+#java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar &
 
-echo "Starting JDownloader..."
-su -pc "java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar 2>&1 >/dev/null" ${USER}
-echo "[DONE]"
-
-while true; do 
-    i=1
-done
+#while true; do
+#	sleep inf
+#done
