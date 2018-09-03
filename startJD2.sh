@@ -9,7 +9,6 @@ function stopJD2 {
 
 if [ "$GID" ]
 then
-	GROUP=jdownloader
 	groupadd -g $GID $GROUP
 else
 	GROUP=root
