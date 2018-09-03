@@ -2,33 +2,11 @@ FROM openjdk:8-jre
 
 MAINTAINER Koopzington <koopzington@gmail.com>
 
-LABEL org.freenas.interactive="false" \
-      org.freenas.version="2" \
-      org.freenas.upgradeable="true"  \
-      org.freenas.expose-ports-at-host="false" \
-      org.freenas.autostart="true" \
-      org.freenas.volumes="[ \
-        { \
-          \"name\": \"/opt/JDownloader/cfg\", \
-          \"descr\": \"Configuration files directory\" \
-        }, \
-        { \
-          \"name\": \"/opt/JDownloader/Downloads\", \
-          \"descr\": \"Downloads Folder\" \
-        } \
-      ]" \
-      org.freenas.settings="[ \
-        { \
-          \"env\": \"JDOWNLOADER_GID\", \
-          \"descr\": \"PGID assigned upon creation\", \
-          \"optional\": true \
-        }, \
-        { \
-          \"env\": \"JDOWNLOADER_UID\", \
-          \"descr\": \"PUID assigned upon creation\", \
-          \"optional\": true \
-        } \
-      ]"
+# the user jd2 will run with and his group
+ARG user=jd2
+ARG group=jd2
+ARG uid=1000
+ARG gid=1000
 
 # Install fontconfig and download phantomjs
 RUN apt-get update && \
@@ -41,19 +19,27 @@ RUN apt-get update && \
     mv phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs && \
     rm -rf /tmp/phantomjs*
 
-# Create user and group for JDownloader.
-RUN groupadd -r -g 666 jdownloader && \
-    useradd -r -u 666 -g 666 jdownloader
+# add specified user and group and create and chown the install and downloads dir
+RUN groupadd -g ${gid} ${group} \
+	&& useradd -u ${uid} -g ${gid} -m -s /bin/bash ${user} \
+      && mkdir -p /opt/JDownloader/ \
+	&& chown -R ${uid}:${group} /opt/JDownloader
+      
+USER ${user}
 
 # Create directory, download and start JD2 for the initial update and creation of config files.
-RUN mkdir -p /opt/JDownloader/ && \
+RUN /
     wget -O /opt/JDownloader/JDownloader.jar --user-agent="https://hub.docker.com/r/koopz/freenas-docker-jdownloader/" --progress=bar:force http://installer.jdownloader.org/JDownloader.jar && \
     java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar
+
+# Beta sevenzipbindings
+COPY sevenzip* /opt/JDownloader/
 
 COPY startJD2.sh /opt/JDownloader/
 RUN chmod +x /opt/JDownloader/startJD2.sh
 
-WORKDIR /opt/JDownloader
 
 # Run this when the container is started
-CMD startJD2.sh
+
+
+CMD /opt/JDownloader/startJD2.sh
