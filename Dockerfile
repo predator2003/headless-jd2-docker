@@ -28,8 +28,8 @@ RUN groupadd -g ${gid} ${group} \
 USER ${user}
 
 # Create directory, download and start JD2 for the initial update and creation of config files.
-RUN /
-    wget -O /opt/JDownloader/JDownloader.jar --user-agent="https://hub.docker.com/r/koopz/freenas-docker-jdownloader/" --progress=bar:force http://installer.jdownloader.org/JDownloader.jar && \
+RUN \
+    wget -O /opt/JDownloader/JDownloader.jar -U="https://hub.docker.com/r/koopz/freenas-docker-jdownloader/" --progress=bar:force http://installer.jdownloader.org/JDownloader.jar && \
     java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar
 
 # Beta sevenzipbindings
