@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  jd:
+    image: "predator2003/headless-jd2-docker"
+    container_name: jd2
+    volumes:
+       - "/opt/JDownloader/cfg:/opt/JDownloader/cfg"
+       - "/opt/JDownloader/scripts:/opt/JDownloader/scripts"
+       - "/opt/JDownloader/libs:/opt/JDownloader/libs"
+       - "/opt/JDownloader/logs:/opt/JDownloader/logs"
+       - "/mnt/jdownloads/0_jd_downloads:/downloads"
+       - "/mnt/jdownloads/1_jd_extracted:/extracted"
