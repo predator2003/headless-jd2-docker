@@ -1,5 +1,6 @@
 
 #!/bin/bash
+# From https://github.com/ben-st/headless-jd2-docker/raw/master/startJD2.sh
 
 function stopJD2 {
 	PID=$(cat JDownloader.pid)
@@ -11,11 +12,9 @@ function stopJD2 {
 trap stopJD2 EXIT
 
 
-
+echo "Starting JDownloader..."
 # Sometimes this gets deleted. Just copy it every time.
 cp /opt/JDownloader/sevenzip* /opt/JDownloader/libs/
-
-echo "Starting JDownloader..."
 java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar &
 echo "[DONE]"
 
