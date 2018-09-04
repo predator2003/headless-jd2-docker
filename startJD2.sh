@@ -9,6 +9,9 @@ function stopJD2 {
 
 trap stopJD2 EXIT
 
+# Sometimes this gets deleted. Just copy it every time.
+cp /opt/JDownloader/sevenzip* /opt/JDownloader/libs/
+
 java -Djava.awt.headless=true -jar /opt/JDownloader/JDownloader.jar &
 
 while true; do
